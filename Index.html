@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre1 Summer Workbook – APS Fort Iqbal D.I.Khan</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+  :root {
+    --sky: #4BB8F5;
+    --sun: #FFD43B;
+    --grass: #5CC85A;
+    --coral: #FF6B6B;
+    --violet: #A78BFA;
+    --cream: #FFFBF0;
+    --ink: #1A1A2E;
+    --card: #FFFFFF;
+    --shadow: rgba(0,0,0,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, var(--sky) 0%, #2196F3 100%);
+    color: white;
+    text-align: center;
+    padding: 32px 16px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "☀️";
+    position: absolute; top: 12px; left: 24px; font-size: 40px;
+    animation: spin 8s linear infinite;
+  }
+  header::after {
+    content: "🌈";
+    position: absolute; top: 8px; right: 24px; font-size: 36px;
+  }
+  @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  header h1 { font-family:'Fredoka One',cursive; font-size:clamp(1.5rem,5vw,2.6rem); letter-spacing:1px; }
+  header p  { font-size:1rem; margin-top:6px; opacity:0.9; }
+
+  /* ── Tab Bar ── */
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px;
+    background: #1565C0;
+    justify-content: center;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .tab {
+    font-family:'Fredoka One',cursive;
+    font-size:1rem;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all .2s;
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  .tab.active, .tab:hover {
+    background: var(--sun);
+    color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+
+  /* ── Sections ── */
+  .section { display: none; padding: 24px 16px; max-width: 860px; margin: 0 auto; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-family:'Fredoka One',cursive;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px var(--shadow);
+  }
+  .card h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: #1565C0;
+  }
+
+  /* ── Stars / Progress ── */
+  .stars-bar {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px;
+  }
+  .star { font-size: 1.5rem; cursor: pointer; transition: transform .15s; }
+  .star:hover { transform: scale(1.3); }
+
+  /* ── Alphabet Grid ── */
+  .alpha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(56px,1fr));
+    gap: 8px;
+  }
+  .alpha-cell {
+    background: linear-gradient(135deg,var(--sky),#2196F3);
+    color: white;
+    border-radius: 14px;
+    padding: 10px 4px;
+    text-align: center;
+    font-family:'Fredoka One',cursive;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: transform .15s, background .15s;
+    user-select: none;
+  }
+  .alpha-cell span { display:block; font-size:0.6rem; font-family:'Nunito',sans-serif; font-weight:700; }
+  .alpha-cell.learned {
+    background: linear-gradient(135deg,var(--grass),#2E7D32);
+    transform: scale(1.08);
+  }
+  .alpha-cell:active { transform: scale(0.95); }
+
+  /* ── Writing Lines ── */
+  .write-area {
+    width: 100%;
+    border: none;
+    border-bottom: 2px dashed #B0BEC5;
+    background: repeating-linear-gradient(transparent, transparent 31px, #B3E5FC 31px, #B3E5FC 32px);
+    line-height: 32px;
+    padding: 4px 8px;
+    font-size: 1.2rem;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    color: var(--ink);
+    min-height: 96px;
+    resize: vertical;
+    outline: none;
+    border-radius: 8px;
+  }
+  .write-area:focus { box-shadow: 0 0 0 3px rgba(75,184,245,0.4); }
+
+  /* ── Vowel Columns ── */
+  .vowel-grid {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    gap: 10px;
+  }
+  .vowel-col { text-align: center; }
+  .vowel-letter {
+    font-family:'Fredoka One',cursive;
+    font-size:2rem;
+    border-radius: 50%;
+    width: 52px; height: 52px;
+    display:flex; align-items:center; justify-content:center;
+    margin: 0 auto 8px;
+    color:white;
+  }
+  .v-a{background:var(--coral);}
+  .v-e{background:var(--sky);}
+  .v-i{background:var(--grass);}
+  .v-o{background:var(--violet);}
+  .v-u{background:var(--sun); color:var(--ink);}
+  .vowel-col input {
+    width:100%; border:2px dashed #B0BEC5; border-radius:8px;
+    padding:6px; margin:4px 0; font-size:0.9rem; font-family:'Nunito',sans-serif;
+    font-weight:700; text-align:center; outline:none;
+  }
+  .vowel-col input:focus { border-color:var(--sky); }
+
+  /* ── Dictation ── */
+  .dict-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px,1fr));
+    gap: 10px;
+  }
+  .dict-word {
+    background: #E3F2FD;
+    border-radius: 12px;
+    padding: 10px;
+    text-align:center;
+  }
+  .dict-word strong { font-size:0.85rem; display:block; color:#1565C0; margin-bottom:6px; text-transform:uppercase; letter-spacing:1px; }
+  .dict-word input {
+    width:100%; border:none; border-bottom:2px solid #90CAF9;
+    background:transparent; font-family:'Nunito',sans-serif;
+    font-weight:700; font-size:1rem; text-align:center; outline:none;
+    padding:2px;
+  }
+  .dict-word.correct { background:#E8F5E9; }
+  .dict-word.correct input { border-color:#66BB6A; color:#2E7D32; }
+  .dict-word.wrong { background:#FFEBEE; }
+  .dict-word.wrong input { border-color:#EF9A9A; color:#C62828; }
+
+  /* ── Math Counting ── */
+  .number-track {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+  }
+  .num-box {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fredoka One',cursive;
+    font-size:1.3rem;
+    cursor:pointer;
+    transition: transform .15s;
+    user-select:none;
+  }
+  .num-box:hover { transform:scale(1.15); }
+
+  /* ── Addition/Subtraction ── */
+  .sum-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+  .sum-card {
+    background:#F3E5F5;
+    border-radius:16px;
+    padding:16px;
+    text-align:center;
+    font-family:'Fredoka One',cursive;
+    font-size:1.4rem;
+  }
+  .sum-card.sub { background:#FFF3E0; }
+  .sum-card input {
+    width:60px; border:none; border-bottom:3px solid #AB47BC;
+    background:transparent; font-family:'Fredoka One',cursive;
+    font-size:1.4rem; text-align:center; outline:none; color:var(--ink);
+  }
+  .sum-card.sub input { border-color:#FF8F00; }
+  .sum-card .check-btn {
+    display:block; margin:8px auto 0;
+    font-family:'Nunito',sans-serif; font-weight:800; font-size:0.8rem;
+    padding:4px 14px; border:none; border-radius:20px;
+    cursor:pointer; transition:background .15s;
+    background:#AB47BC; color:white;
+  }
+  .sum-card.sub .check-btn { background:#FF8F00; }
+  .sum-card .result { font-size:1rem; margin-top:4px; min-height:1.2rem; }
+
+  /* ── Shapes ── */
+  .shapes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:16px; }
+  .shape-card {
+    background:white; border-radius:20px; padding:20px;
+    text-align:center; box-shadow:0 4px 14px var(--shadow);
+    transition:transform .2s;
+  }
+  .shape-card:hover { transform:translateY(-4px); }
+  .shape-svg { width:80px; height:80px; margin:0 auto 10px; }
+  .shape-card h4 { font-family:'Fredoka One',cursive; font-size:1.1rem; color:#1565C0; }
+  .shape-card input {
+    margin-top:8px; width:100%; border:none; border-bottom:2px dashed #90CAF9;
+    background:transparent; font-family:'Nunito',sans-serif; font-weight:700;
+    font-size:0.95rem; text-align:center; outline:none;
+  }
+
+  /* ── Number Words ── */
+  .numword-grid { display:flex; flex-direction:column; gap:10px; }
+  .numword-row {
+    display:flex; align-items:center; gap:14px;
+    background:white; border-radius:14px; padding:12px 16px;
+    box-shadow:0 2px 8px var(--shadow);
+  }
+  .numword-digit {
+    font-family:'Fredoka One',cursive; font-size:2rem;
+    width:52px; text-align:center;
+    background:var(--sky); color:white;
+    border-radius:12px; padding:4px;
+  }
+  .numword-objects { font-size:1.3rem; flex:1; letter-spacing:2px; }
+  .numword-row input {
+    border:none; border-bottom:2px dashed #90CAF9;
+    font-family:'Nunito',sans-serif; font-weight:700;
+    font-size:1rem; width:120px; outline:none; text-align:center;
+  }
+
+  /* ── Days ── */
+  .days-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; }
+  .day-card {
+    border-radius:16px; padding:14px; text-align:center;
+    font-family:'Fredoka One',cursive; font-size:1rem; color:white;
+    cursor:pointer; transition:transform .15s;
+    user-select:none;
+  }
+  .day-card.learned { opacity:0.5; text-decoration:line-through; }
+  .day-card:active { transform:scale(0.95); }
+
+  /* ── Urdu ── */
+  .urdu-section { direction:rtl; font-size:1.1rem; line-height:2; }
+  .urdu-word-list {
+    display:flex; flex-wrap:wrap; gap:10px; direction:rtl; margin-bottom:12px;
+  }
+  .urdu-chip {
+    background:#EDE7F6; color:#4A148C;
+    border-radius:30px; padding:6px 16px;
+    font-size:1rem; font-weight:700;
+    cursor:pointer; transition:background .15s;
+    user-select:none;
+  }
+  .urdu-chip.practiced { background:#C8E6C9; color:#1B5E20; }
+  .urdu-write { width:100%; border:none; border-bottom:2px dashed #CE93D8;
+    font-size:1.2rem; padding:6px 4px; direction:rtl; outline:none;
+    background:transparent; font-family:'Nunito',sans-serif; margin-top:6px; }
+
+  /* ── Progress Bar ── */
+  .progress-wrap { background:#E0E0E0; border-radius:20px; overflow:hidden; height:16px; margin-bottom:6px; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--grass),var(--sky)); border-radius:20px; transition:width .5s; }
+
+  /* ── Badge ── */
+  .badge { display:inline-flex; align-items:center; gap:6px; background:var(--sun); border-radius:30px; padding:4px 14px; font-weight:800; font-size:0.85rem; color:var(--ink); }
+
+  /* ── Buttons ── */
+  .btn { font-family:'Nunito',sans-serif; font-weight:800; padding:10px 22px; border:none; border-radius:30px; cursor:pointer; font-size:0.95rem; transition:all .2s; }
+  .btn-primary { background:var(--sky); color:white; }
+  .btn-primary:hover { background:#1565C0; transform:translateY(-2px); }
+  .btn-success { background:var(--grass); color:white; }
+  .btn-sun { background:var(--sun); color:var(--ink); }
+
+  .mt { margin-top: 14px; }
+
+  /* ── Responsive ── */
+  @media(max-width:540px){
+    .vowel-grid { grid-template-columns:repeat(3,1fr); }
+    .vowel-grid .vowel-col:nth-child(4),
+    .vowel-grid .vowel-col:nth-child(5){ grid-column: span 1; }
+    .alpha-grid { grid-template-columns: repeat(auto-fill, minmax(48px,1fr)); }
+  }
+
+  /* ── Celebration ── */
+  .celebrate { display:none; text-align:center; font-size:2rem; animation:pop .5s ease; }
+  .celebrate.show { display:block; }
+  @keyframes pop { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+
+  /* Backward counting */
+  .backward-track { display:flex; flex-wrap:wrap; gap:6px; }
+  .bwd-box {
+    width:46px; height:46px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fredoka One',cursive; font-size:1.1rem;
+    background:#F3E5F5; color:#6A1B9A;
+    cursor:pointer; transition:all .15s;
+  }
+  .bwd-box.tapped { background:#7B1FA2; color:white; transform:scale(1.1); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎒 Pre-1 Summer Workbook</h1>
+  <p>Army Public School & College Fort Iqbal D.I.Khan &nbsp;|&nbsp; 2026-27</p>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="show('english')">📖 English</button>
+  <button class="tab" onclick="show('math')">🔢 Maths</button>
+  <button class="tab" onclick="show('urdu')">اردو</button>
+  <button class="tab" onclick="show('progress')">🏆 My Stars</button>
+</div>
+
+<!-- ══════════════ ENGLISH ══════════════ -->
+<div id="english" class="section active">
+  <div class="section-title">📖 English Activities</div>
+
+  <!-- Alphabet -->
+  <div class="card">
+    <h3>🔤 Alphabets A-Z &amp; a-z &nbsp;<span class="badge" id="alpha-badge">0/26 learned</span></h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Tap a letter to mark it as <strong>learned</strong>!</p>
+    <div class="alpha-grid" id="alpha-grid"></div>
+  </div>
+
+  <!-- Matching -->
+  <div class="card">
+    <h3>🔗 Match Capital → Small Letter</h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Drag or type the matching small letter.</p>
+    <div id="match-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;"></div>
+  </div>
+
+  <!-- Vowels -->
+  <div class="card">
+    <h3>🌟 Vowels &amp; Consonants</h3>
+    <div class="vowel-grid">
+      <div class="vowel-col"><div class="vowel-letter v-a">A</div>
+        <input placeholder="Word 1"/><input placeholder="Word 2"/><input placeholder="Word 3"/></div>
+      <div class="vowel-col"><div class="vowel-letter v-e">E</div>
+        <input placeholder="Word 1"/><input placeholder="Word 2"/><input placeholder="Word 3"/></div>
+      <div class="vowel-col"><div class="vowel-letter v-i">I</div>
+        <input placeholder="Word 1"/><input placeholder="Word 2"/><input placeholder="Word 3"/></div>
+      <div class="vowel-col"><div class="vowel-letter v-o">O</div>
+        <input placeholder="Word 1"/><input placeholder="Word 2"/><input placeholder="Word 3"/></div>
+      <div class="vowel-col"><div class="vowel-letter v-u">U</div>
+        <input placeholder="Word 1"/><input placeholder="Word 2"/><input placeholder="Word 3"/></div>
+    </div>
+  </div>
+
+  <!-- Letter Words a-h -->
+  <div class="card">
+    <h3>✏️ 5 Words from each letter (a–h)</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;" id="letter-words"></div>
+  </div>
+
+  <!-- Dictation -->
+  <div class="card">
+    <h3>🎤 Dictation Practice</h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Write the word in the box. Click <strong>Check</strong> to see if it's right!</p>
+    <div class="dict-grid" id="dict-grid"></div>
+    <button class="btn btn-primary mt" onclick="checkDictation()">✅ Check All</button>
+    <button class="btn btn-sun mt" style="margin-left:8px" onclick="resetDictation()">🔄 Reset</button>
+  </div>
+
+  <!-- Magic Key -->
+  <div class="card">
+    <h3>📕 The Magic Key Reader – Pages 3 to 15</h3>
+    <p style="font-size:0.9rem;color:#555;margin-bottom:14px;">Tap a page number after you've read it to mark it done!</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;" id="pages-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════════ MATHS ══════════════ -->
+<div id="math" class="section">
+  <div class="section-title">🔢 Maths Activities</div>
+
+  <!-- Counting from 60 -->
+  <div class="card">
+    <h3>🔢 Counting from 60</h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Tap each number in order!</p>
+    <div class="number-track" id="count-track"></div>
+    <div class="celebrate" id="count-cel">🎉 Amazing Counting! 🎉</div>
+  </div>
+
+  <!-- Backward Counting -->
+  <div class="card">
+    <h3>⬇️ Backward Counting 20→0</h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Tap numbers from 20 down to 0!</p>
+    <div class="backward-track" id="bwd-track"></div>
+    <div class="celebrate" id="bwd-cel">🎉 Superstar Backward Counter! 🎉</div>
+  </div>
+
+  <!-- Addition -->
+  <div class="card">
+    <h3>➕ 10 Addition Sums</h3>
+    <div class="sum-grid" id="add-grid"></div>
+  </div>
+
+  <!-- Subtraction -->
+  <div class="card">
+    <h3>➖ 10 Subtraction Sums</h3>
+    <div class="sum-grid" id="sub-grid"></div>
+  </div>
+
+  <!-- Shapes -->
+  <div class="card">
+    <h3>🔷 2D Shapes – Learn the Names</h3>
+    <div class="shapes-grid">
+      <div class="shape-card">
+        <svg class="shape-svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" fill="#4BB8F5" opacity=".8"/></svg>
+        <h4>Circle</h4><input placeholder="Type: circle"/>
+      </div>
+      <div class="shape-card">
+        <svg class="shape-svg" viewBox="0 0 80 80"><rect x="8" y="8" width="64" height="64" rx="4" fill="#FF6B6B" opacity=".8"/></svg>
+        <h4>Square</h4><input placeholder="Type: square"/>
+      </div>
+      <div class="shape-card">
+        <svg class="shape-svg" viewBox="0 0 80 80"><rect x="4" y="20" width="72" height="40" rx="4" fill="#5CC85A" opacity=".8"/></svg>
+        <h4>Rectangle</h4><input placeholder="Type: rectangle"/>
+      </div>
+      <div class="shape-card">
+        <svg class="shape-svg" viewBox="0 0 80 80"><polygon points="40,6 74,74 6,74" fill="#A78BFA" opacity=".8"/></svg>
+        <h4>Triangle</h4><input placeholder="Type: triangle"/>
+      </div>
+      <div class="shape-card">
+        <svg class="shape-svg" viewBox="0 0 80 80"><ellipse cx="40" cy="40" rx="36" ry="22" fill="#FFD43B" opacity=".8"/></svg>
+        <h4>Oval</h4><input placeholder="Type: oval"/>
+      </div>
+    </div>
+    <button class="btn btn-primary mt" onclick="checkShapes()">✅ Check Spellings</button>
+    <div id="shapes-result" class="mt" style="font-weight:800;font-size:1rem;"></div>
+  </div>
+
+  <!-- Number Words -->
+  <div class="card">
+    <h3>🔤 Number Words – Zero to Ten</h3>
+    <div class="numword-grid" id="numword-grid"></div>
+    <button class="btn btn-primary mt" onclick="checkNumWords()">✅ Check</button>
+    <div id="numword-result" class="mt" style="font-weight:800;"></div>
+  </div>
+
+  <!-- Days of the Week -->
+  <div class="card">
+    <h3>📅 Days of the Week</h3>
+    <p style="font-size:0.85rem;color:#555;margin-bottom:12px;">Tap a day when you've learned it!</p>
+    <div class="days-grid" id="days-grid"></div>
+    <div class="celebrate" id="days-cel">🎉 You learned all 7 days! 🎉</div>
+  </div>
+</div>
+
+<!-- ══════════════ URDU ══════════════ -->
+<div id="urdu" class="section">
+  <div class="section-title">اردو سرگرمیاں ✏️</div>
+
+  <div class="card urdu-section">
+    <h3 style="direction:rtl;text-align:right;color:#4A148C;">📝 ذخیرہ الفاظ – لکھنے اور پڑھنے کی مشق</h3>
+    <p style="direction:rtl;text-align:right;font-size:0.9rem;color:#555;margin-bottom:12px;">ہر لفظ پر کلک کریں جب آپ اسے لکھ لیں۔</p>
+    <div class="urdu-word-list" id="urdu-words"></div>
+    <div style="margin-top:16px;">
+      <p style="direction:rtl;text-align:right;font-weight:700;margin-bottom:8px;">یہاں لکھیں:</p>
+      <textarea class="urdu-write" rows="4" placeholder="لفظ لکھیں..."></textarea>
+    </div>
+  </div>
+
+  <div class="card urdu-section">
+    <h3 style="direction:rtl;text-align:right;color:#4A148C;">🔗 جوڑ / توڑ مشق</h3>
+    <p style="direction:rtl;text-align:right;font-size:0.9rem;color:#555;margin-bottom:12px;">الفاظ کے جوڑ کی مشق کریں۔ ہر لفظ پر ٹیپ کریں۔</p>
+    <div class="urdu-word-list" id="urdu-jod"></div>
+    <div style="margin-top:16px;">
+      <textarea class="urdu-write" rows="4" placeholder="جوڑ لکھیں..."></textarea>
+    </div>
+  </div>
+
+  <div class="card urdu-section">
+    <h3 style="direction:rtl;text-align:right;color:#4A148C;">✍️ جملے لکھیں</h3>
+    <div style="direction:rtl;text-align:right;font-size:1rem;font-weight:700;margin-bottom:10px;line-height:2.2;">
+      <p>آپا کو روٹی دو۔</p>
+      <p>دادا آم لائے۔</p>
+      <p>باجی جال لا دو۔</p>
+      <p>خان بابا آئے۔</p>
+      <p>آری چاچا کی ہے۔</p>
+    </div>
+    <p style="direction:rtl;text-align:right;font-weight:700;margin-bottom:8px;">یہاں جملے لکھیں:</p>
+    <textarea class="urdu-write" rows="6" placeholder="جملے لکھیں..."></textarea>
+  </div>
+</div>
+
+<!-- ══════════════ PROGRESS ══════════════ -->
+<div id="progress" class="section">
+  <div class="section-title">🏆 My Progress Stars</div>
+
+  <div class="card">
+    <h3>⭐ Rate Yourself!</h3>
+    <p style="font-size:0.9rem;color:#555;margin-bottom:16px;">Give yourself stars for each activity you completed.</p>
+    <div id="star-ratings"></div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Overall Progress</h3>
+    <div id="overall-progress"></div>
+    <div id="overall-badge" class="mt" style="text-align:center;font-size:2rem;"></div>
+  </div>
+</div>
+
+<script>
+// ══ Alphabet ══
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const alphaGrid = document.getElementById('alpha-grid');
+const learned = new Set();
+
+letters.forEach(L => {
+  const el = document.createElement('div');
+  el.className = 'alpha-cell';
+  el.innerHTML = `${L}<span>${L.toLowerCase()}</span>`;
+  el.onclick = () => {
+    if(learned.has(L)){ learned.delete(L); el.classList.remove('learned'); }
+    else { learned.add(L); el.classList.add('learned'); }
+    document.getElementById('alpha-badge').textContent = `${learned.size}/26 learned`;
+    updateOverall();
+  };
+  alphaGrid.appendChild(el);
+});
+
+// ══ Matching ══
+const matchGrid = document.getElementById('match-grid');
+'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(L => {
+  const el = document.createElement('div');
+  el.style.cssText = 'display:flex;align-items:center;gap:8px;background:#F3F4F6;border-radius:12px;padding:8px 12px;';
+  el.innerHTML = `<span style="font-family:Fredoka One,cursive;font-size:1.6rem;color:#1565C0;width:32px">${L}</span>
+    <span style="font-size:1.2rem">→</span>
+    <input style="border:none;border-bottom:2px dashed #90CAF9;background:transparent;font-family:Nunito,sans-serif;font-weight:700;font-size:1.3rem;width:40px;text-align:center;outline:none;" maxlength="1" placeholder="?">`;
+  const inp = el.querySelector('input');
+  inp.addEventListener('input', () => {
+    const v = inp.value.toLowerCase();
+    inp.style.color = v === L.toLowerCase() ? '#2E7D32' : '#C62828';
+    updateOverall();
+  });
+  matchGrid.appendChild(el);
+});
+
+// ══ Letter Words a-h ══
+const letterWordsContainer = document.getElementById('letter-words');
+'abcdefgh'.split('').forEach(l => {
+  const col = document.createElement('div');
+  col.innerHTML = `<div style="font-family:Fredoka One,cursive;font-size:1.6rem;color:#1565C0;margin-bottom:6px;">${l.toUpperCase()} / ${l}</div>`;
+  for(let i=1;i<=5;i++){
+    const inp = document.createElement('input');
+    inp.placeholder = `Word ${i}`;
+    inp.style.cssText='width:100%;border:none;border-bottom:2px dashed #B0BEC5;margin:4px 0;padding:4px;font-family:Nunito,sans-serif;font-weight:700;font-size:0.95rem;outline:none;background:transparent;';
+    col.appendChild(inp);
+  }
+  letterWordsContainer.appendChild(col);
+});
+
+// ══ Dictation ══
+const dictWords = ['ant','arm','box','bat','car','cat','dog','dot','egg','ear','eat','fan','fat','five','green','goat','grass','home','hook','hat'];
+const dictGrid = document.getElementById('dict-grid');
+dictWords.forEach(w => {
+  const el = document.createElement('div');
+  el.className = 'dict-word';
+  el.innerHTML = `<strong>#${dictWords.indexOf(w)+1}</strong><input type="text" placeholder="write here">`;
+  dictGrid.appendChild(el);
+});
+
+function checkDictation(){
+  dictGrid.querySelectorAll('.dict-word').forEach((el,i) => {
+    const val = el.querySelector('input').value.trim().toLowerCase();
+    el.classList.remove('correct','wrong');
+    if(val === dictWords[i]) el.classList.add('correct');
+    else if(val) el.classList.add('wrong');
+  });
+  updateOverall();
+}
+function resetDictation(){
+  dictGrid.querySelectorAll('input').forEach(i=>{ i.value=''; });
+  dictGrid.querySelectorAll('.dict-word').forEach(el=>el.classList.remove('correct','wrong'));
+}
+
+// ══ Magic Key Pages ══
+const pagesGrid = document.getElementById('pages-grid');
+const pagesDone = new Set();
+for(let p=3;p<=15;p++){
+  const el = document.createElement('div');
+  el.style.cssText=`width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:Fredoka One,cursive;font-size:1.1rem;cursor:pointer;transition:all .15s;background:#E3F2FD;color:#1565C0;`;
+  el.textContent=p;
+  el.onclick=()=>{
+    if(pagesDone.has(p)){ pagesDone.delete(p); el.style.background='#E3F2FD'; el.style.color='#1565C0'; }
+    else{ pagesDone.add(p); el.style.background='#2E7D32'; el.style.color='white'; el.style.transform='scale(1.1)'; }
+    updateOverall();
+  };
+  pagesGrid.appendChild(el);
+}
+
+// ══ Counting 60-100 ══
+const countTrack = document.getElementById('count-track');
+let countNext = 60;
+for(let n=60;n<=100;n++){
+  const box = document.createElement('div');
+  box.className='num-box';
+  box.textContent=n;
+  const hue = Math.round((n-60)*9);
+  box.style.background=`hsl(${hue+180},70%,85%)`;
+  box.style.color=`hsl(${hue+180},60%,30%)`;
+  box.dataset.n=n;
+  box.onclick=()=>{
+    if(parseInt(box.dataset.n)===countNext){
+      box.style.background=`hsl(${hue+180},70%,40%)`;
+      box.style.color='white';
+      box.style.transform='scale(1.1)';
+      box.style.cursor='default';
+      countNext++;
+      if(countNext>100){ document.getElementById('count-cel').classList.add('show'); updateOverall(); }
+    }
+  };
+  countTrack.appendChild(box);
+}
+
+// ══ Backward counting ══
+const bwdTrack = document.getElementById('bwd-track');
+let bwdNext = 20;
+for(let n=20;n>=0;n--){
+  const box = document.createElement('div');
+  box.className='bwd-box'; box.textContent=n; box.dataset.n=n;
+  box.onclick=()=>{
+    if(parseInt(box.dataset.n)===bwdNext){
+      box.classList.add('tapped'); bwdNext--;
+      if(bwdNext<0){ document.getElementById('bwd-cel').classList.add('show'); updateOverall(); }
+    }
+  };
+  bwdTrack.appendChild(box);
+}
+
+// ══ Addition / Subtraction ══
+const addGrid=document.getElementById('add-grid');
+const subGrid=document.getElementById('sub-grid');
+const addSums=[[3,4],[5,2],[1,6],[7,3],[4,4],[2,8],[6,5],[9,1],[0,7],[8,2]];
+const subSums=[[10,3],[8,5],[7,2],[9,4],[6,1],[5,3],[4,0],[10,6],[8,7],[9,9]];
+
+function makeSumCard(a,b,op,container){
+  const el=document.createElement('div');
+  el.className='sum-card'+(op==='-'?' sub':'');
+  const ans=op==='+'?a+b:a-b;
+  const sym=op==='+'?'➕':'➖';
+  el.innerHTML=`<div>${sym} ${a} ${op} ${b} = <input type="number" min="0" max="20"></div>
+  <button class="check-btn">Check</button>
+  <div class="result"></div>`;
+  el.querySelector('.check-btn').onclick=()=>{
+    const v=parseInt(el.querySelector('input').value);
+    const r=el.querySelector('.result');
+    if(v===ans){ r.textContent='✅ Correct!'; r.style.color='#2E7D32'; }
+    else if(el.querySelector('input').value===''){ r.textContent=''; }
+    else{ r.textContent=`❌ Try again!`; r.style.color='#C62828'; }
+    updateOverall();
+  };
+  container.appendChild(el);
+}
+addSums.forEach(([a,b])=>makeSumCard(a,b,'+',addGrid));
+subSums.forEach(([a,b])=>makeSumCard(a,b,'-',subGrid));
+
+// ══ Shapes check ══
+const shapeAnswers=['circle','square','rectangle','triangle','oval'];
+function checkShapes(){
+  const inputs=document.querySelectorAll('.shape-card input');
+  let ok=0;
+  inputs.forEach((inp,i)=>{
+    if(inp.value.trim().toLowerCase()===shapeAnswers[i]){
+      inp.style.borderColor='#2E7D32'; inp.style.color='#2E7D32'; ok++;
+    } else if(inp.value){
+      inp.style.borderColor='#C62828'; inp.style.color='#C62828';
+    }
+  });
+  document.getElementById('shapes-result').textContent=`${ok}/5 correct!`;
+  document.getElementById('shapes-result').style.color=ok===5?'#2E7D32':'#1565C0';
+  updateOverall();
+}
+
+// ══ Number Words ══
+const numWords=['zero','one','two','three','four','five','six','seven','eight','nine','ten'];
+const numEmoji=['','🍎','🍎🍎','🍎🍎🍎','🍎🍎🍎🍎','🍎🍎🍎🍎🍎','🍎🍎🍎🍎🍎🍎','🍎🍎🍎🍎🍎🍎🍎','🍎🍎🍎🍎🍎🍎🍎🍎','🍎🍎🍎🍎🍎🍎🍎🍎🍎','🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎'];
+const numwordGrid=document.getElementById('numword-grid');
+numWords.forEach((w,i)=>{
+  const row=document.createElement('div'); row.className='numword-row';
+  row.innerHTML=`<div class="numword-digit">${i}</div>
+    <div class="numword-objects">${numEmoji[i]||'🚫'}</div>
+    <input placeholder="write word" data-ans="${w}">`;
+  numwordGrid.appendChild(row);
+});
+function checkNumWords(){
+  let ok=0;
+  numwordGrid.querySelectorAll('input').forEach(inp=>{
+    if(inp.value.trim().toLowerCase()===inp.dataset.ans){ inp.style.borderColor='#2E7D32'; inp.style.color='#2E7D32'; ok++; }
+    else if(inp.value){ inp.style.borderColor='#C62828'; inp.style.color='#C62828'; }
+  });
+  document.getElementById('numword-result').textContent=`${ok}/11 correct!`;
+  document.getElementById('numword-result').style.color=ok===11?'#2E7D32':'#1565C0';
+  updateOverall();
+}
+
+// ══ Days ══
+const days=[{n:'Monday',c:'#4BB8F5'},{n:'Tuesday',c:'#FF6B6B'},{n:'Wednesday',c:'#5CC85A'},
+  {n:'Thursday',c:'#A78BFA'},{n:'Friday',c:'#FFD43B'},{n:'Saturday',c:'#FF8F00'},{n:'Sunday',c:'#1565C0'}];
+const daysGrid=document.getElementById('days-grid');
+const daysDone=new Set();
+days.forEach(d=>{
+  const el=document.createElement('div');
+  el.className='day-card'; el.style.background=d.c; el.textContent=d.n;
+  if(d.n==='Friday') el.style.border='3px solid gold';
+  el.onclick=()=>{
+    daysDone.has(d.n)?daysDone.delete(d.n):daysDone.add(d.n);
+    el.classList.toggle('learned');
+    if(daysDone.size===7) document.getElementById('days-cel').classList.add('show');
+    updateOverall();
+  };
+  daysGrid.appendChild(el);
+});
+
+// ══ Urdu words ══
+const urduWords=['اچار','انار','اونٹ','انڈا','آٹا','آپا','آڑو','آلو','بارش','باجا','پانی','پتا','باجا','تالا','تار','توت','ٹوپی','ٹاٹا','ٹانگ','ثابت','ثور','شمر','ثانی','جوتا','جگ','جوڑ','جاتا','چاچا','چور','چڑیاچاند','حور حاجی','حوض','خان','خلوا','خوش','دادا','ڈول','رات','خاک','خام','ذراہ باری'];
+const urduWordsDiv=document.getElementById('urdu-words');
+const urduPracticed=new Set();
+urduWords.forEach(w=>{
+  const chip=document.createElement('div'); chip.className='urdu-chip'; chip.textContent=w;
+  chip.onclick=()=>{
+    if(urduPracticed.has(w)){ urduPracticed.delete(w); chip.classList.remove('practiced'); }
+    else{ urduPracticed.add(w); chip.classList.add('practiced'); }
+    updateOverall();
+  };
+  urduWordsDiv.appendChild(chip);
+});
+
+const urduJodWords=['آلو','آٹا','آڑو','باب','بال','باغ','پاک','پال','پان پار','تار','تاپ','تال','تاج','ٹاٹ','ٹوٹ','ٹاٹ','جال','جان','جاگ جاٹ','چاک','چار','چاٹ','چال','حال','خاک','خان','خون','خام','خاص','دادا','ڈول','رات','پہاڑ','ذروب','ذراہ باری'];
+const urduJodDiv=document.getElementById('urdu-jod');
+urduJodWords.forEach(w=>{
+  const chip=document.createElement('div'); chip.className='urdu-chip'; chip.textContent=w;
+  chip.onclick=()=>chip.classList.toggle('practiced');
+  urduJodDiv.appendChild(chip);
+});
+
+// ══ Star Ratings ══
+const activities=[
+  'Write Alphabets A-Z', 'Match Capital & Small Letters', 'Vowels & Consonants',
+  '3 Words from Each Vowel', 'Words from a to h', 'Dictation Words',
+  'Magic Key Reader (Pg 3-15)', 'Counting from 60', 'Backward Counting 20-0',
+  '10 Addition Sums', '10 Subtraction Sums', '2D Shapes Spellings',
+  'Number Words (0-10)', 'Days of the Week', 'Urdu Vocabulary Practice', 'Urdu Joining Practice'
+];
+const starRatings=document.getElementById('star-ratings');
+const ratings={};
+activities.forEach(a=>{
+  ratings[a]=0;
+  const row=document.createElement('div');
+  row.style.cssText='display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;';
+  row.innerHTML=`<span style="font-weight:700;font-size:0.9rem;flex:1;min-width:160px;">${a}</span>
+    <div class="stars-bar" data-act="${a}">
+      ${'⭐'.repeat(5).split('').map((_,i)=>`<span class="star" data-i="${i+1}">⭐</span>`).join('')}
+    </div>`;
+  row.querySelectorAll('.star').forEach(s=>{
+    s.addEventListener('click',()=>{
+      const i=parseInt(s.dataset.i); ratings[a]=i;
+      row.querySelectorAll('.star').forEach((st,idx)=>{ st.style.filter=idx<i?'':'grayscale(1) opacity(0.4)'; });
+      updateOverall();
+    });
+  });
+  // default all gray
+  row.querySelectorAll('.star').forEach(st=>{ st.style.filter='grayscale(1) opacity(0.4)'; });
+  starRatings.appendChild(row);
+});
+
+// ══ Overall Progress ══
+function updateOverall(){
+  const totalStars=Object.values(ratings).reduce((a,b)=>a+b,0);
+  const maxStars=activities.length*5;
+  const pct=Math.round(totalStars/maxStars*100);
+  const op=document.getElementById('overall-progress');
+  op.innerHTML=`<div class="progress-wrap"><div class="progress-fill" style="width:${pct}%"></div></div>
+  <p style="font-weight:800;font-size:1rem;margin-top:6px;text-align:center;">${pct}% Complete – ${totalStars}/${maxStars} stars</p>`;
+  const badge=document.getElementById('overall-badge');
+  if(pct>=80) badge.textContent='🥇 Gold Star Student!';
+  else if(pct>=50) badge.textContent='🥈 Great Job, Keep Going!';
+  else if(pct>0) badge.textContent='🌱 Good Start!';
+  else badge.textContent='';
+}
+updateOverall();
+
+// ══ Tab switching ══
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>
